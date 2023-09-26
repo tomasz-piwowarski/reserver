@@ -1,0 +1,6 @@
+PATCH http://localhost:8000/api/rooms/130a5b2a-8aa2-4232-8134-448f88542b22/
+content-type: application/json
+
+{
+	"occupied": "true"
+}
