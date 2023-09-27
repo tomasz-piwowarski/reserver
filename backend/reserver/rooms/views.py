@@ -1,14 +1,17 @@
 from json import JSONDecodeError
 from django.http import JsonResponse
-from .serializers import RoomSerializer
-from .models import Room
+from .serializers import RoomSerializer, RoomReservationSerializer
+from .models import Room, RoomReservation
 from django.http import Http404
 from rest_framework.parsers import JSONParser
-from rest_framework import views, status
+from rest_framework import views, status, generics
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 
 
 class RoomApiDetailView(views.APIView):
+	permission_classes = (IsAuthenticated,)
+
 	def get_object(self, pk):
 		try:
 			return Room.objects.get(pk=pk)
@@ -36,6 +39,8 @@ class RoomApiDetailView(views.APIView):
 
 
 class RoomApiListView(views.APIView):
+	permission_classes = (IsAuthenticated,)
+
 	def get(self, request):
 		rooms = Room.objects.all()
 		serializer = RoomSerializer(rooms, many=True)
@@ -45,10 +50,37 @@ class RoomApiListView(views.APIView):
 		try:
 			data = JSONParser().parse(request)
 			serializer = RoomSerializer(data=data)
-			if serializer.is_valid(raise_exception=True):
+			if serializer.is_valid():
 				serializer.save()
 				return Response(serializer.data)
 			else:
 				return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 		except JSONDecodeError:
 			return JsonResponse({'result': 'error', 'message': 'Json decoding error'}, status=400)
+
+class RoomReservationListView(views.APIView):
+	permission_classes = (IsAuthenticated,)
+
+	def post(self, request):
+		try:
+			data = JSONParser().parse(request)
+			serializer = RoomReservationSerializer(data=data)
+			if serializer.is_valid():
+				serializer.save()
+				return Response(serializer.data)
+			else:
+				return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+		except JSONDecodeError:
+			return JsonResponse({'result': 'error', 'message': 'Json decoding error'}, status=400)
+
+	def get(self, request):
+		reservations = RoomReservation.objects.all()
+		serializer = RoomReservationSerializer(reservations, many=True)
+		return Response(serializer.data)
+
+class RoomReservationDetailView(generics.RetrieveUpdateDestroyAPIView):
+	permission_classes = (IsAuthenticated,)
+
+	serializer_class = RoomReservationSerializer
+	queryset = RoomReservation.objects.all()
+		

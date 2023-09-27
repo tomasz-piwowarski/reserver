@@ -7,7 +7,7 @@ from .models import Room
 class RoomTestCase(APITestCase):
 	def setUp(self):
 		self.client = APIClient()
-		self.data = {"occupied": False, "room_name": "Room #1"}
+		self.data = {"room_name": "Room #1"}
 		self.url = "/room/"
 
 	def test_create_room(self):
