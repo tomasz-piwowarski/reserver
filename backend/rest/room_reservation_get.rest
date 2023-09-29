@@ -1,0 +1,2 @@
+GET http://localhost:8000/api/rooms/reservation/5688ecd4-2bc6-4826-ba46-43ce3abf900b/ HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk1ODI4MjgwLCJpYXQiOjE2OTU4Mjc5ODAsImp0aSI6IjJmYjM3OTI4NTg2NzQ3YzhhZWMwMjIzMDBhMmExZWJhIiwidXNlcl9pZCI6Mn0.m4VvnTkpeKjr8p4M9idWuaOA1JDfuMiFyN3UmFa_JrA

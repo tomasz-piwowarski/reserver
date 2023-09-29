@@ -2,6 +2,6 @@ POST http://localhost:8000/api/token/
 Content-Type: application/json
 
 {
-	"username": "Test",
+	"username": "room1",
 	"password": "testpassword"
 }

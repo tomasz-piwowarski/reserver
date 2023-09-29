@@ -1,6 +1,7 @@
 from . import models
+from django.contrib.auth import get_user_model
 from rest_framework import serializers
-from rest_framework.fields import CharField, BooleanField, UUIDField, DateTimeField, IntegerField
+from rest_framework.fields import CharField, SerializerMethodField, UUIDField, DateTimeField
 from rest_framework.validators import UniqueTogetherValidator
 
 class RoomSerializer(serializers.ModelSerializer):
@@ -9,6 +10,7 @@ class RoomSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = models.Room
 		fields = (
+			'id',
 			'room_name',
 		)
 
@@ -20,13 +22,6 @@ class RoomSerializer(serializers.ModelSerializer):
 		]
 
 class RoomReservationSerializer(serializers.ModelSerializer):
-	room = UUIDField(required=True)
-	user = IntegerField(required=True)
-	start_time = DateTimeField(required=True)
-	end_time = DateTimeField(required=True)
-
 	class Meta:
 		model = models.RoomReservation
-		fields = (
-			'room', 'user', 'start_time', 'end_time'
-		)
+		fields = "__all__"
