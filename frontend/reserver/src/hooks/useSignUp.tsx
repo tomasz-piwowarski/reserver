@@ -1,9 +1,10 @@
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { DJANGO_URL } from "@/utils/const";
+import { DJANGO_URL } from "@/utils/consts";
 
 export default function useSignUp() {
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   async function handleSubmit(formData: FormData): Promise<void> {
     setLoading(true);
@@ -17,12 +18,12 @@ export default function useSignUp() {
     try {
       await fetch(`${DJANGO_URL}/user/register/`, options);
 
-      redirect("/api/auth/signin");
+      router.push("/api/auth/signin");
     } catch (error) {
       console.log(error);
-    } finally {
-      setLoading(false);
     }
+
+    setLoading(false);
   }
 
   return { handleSubmit, loading };

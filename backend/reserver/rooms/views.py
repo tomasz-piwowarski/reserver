@@ -3,11 +3,12 @@ from django.http import JsonResponse
 from .serializers import RoomSerializer, RoomReservationSerializer
 from .models import Room, RoomReservation
 from django.http import Http404
-import uuid
+from datetime import datetime
 from rest_framework.parsers import JSONParser
 from rest_framework import views, status, generics
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
+import pytz
 
 
 class RoomApiDetailView(views.APIView):
@@ -99,3 +100,20 @@ class RoomReservationDetailView(generics.RetrieveUpdateDestroyAPIView):
 	serializer_class = RoomReservationSerializer
 	queryset = RoomReservation.objects.all()
 		
+class CheckIfRoomIsReserved(views.APIView):
+	permission_classes = (IsAuthenticated,)
+
+	def get(self, request, id):
+		room = RoomReservation.objects.filter(room=id).latest("end_time")
+
+		if not room:
+			return Response({})
+
+		utc = pytz.UTC
+		current_datetime = utc.localize(datetime.now())
+
+		if room.end_time < current_datetime:
+			room = RoomReservationSerializer(room)
+			return Response(room.data)
+		else:
+			return Response({})

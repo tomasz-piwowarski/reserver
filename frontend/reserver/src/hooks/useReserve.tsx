@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { DJANGO_URL } from "@/utils/const";
+import { DJANGO_URL } from "@/utils/consts";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 

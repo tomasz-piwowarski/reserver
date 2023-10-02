@@ -20,5 +20,5 @@ class RoomReservation(models.Model):
 	start_time = models.DateTimeField(verbose_name="start_time")
 	end_time = models.DateTimeField(verbose_name="end_time")
 
-	def __str__(self):
-		return f'{self}'
+	# def __str__(self):
+	# 	return f'{self}'

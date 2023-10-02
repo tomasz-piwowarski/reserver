@@ -11,11 +11,10 @@ export default async function Reserver() {
     redirect("/api/auth/signin");
 
   const user = session.user!.name;
-  console.log(session);
   return (
     <>
       {session.user.room ? (
-        <Room user={session.user.user_id} room={session.user.room.id} />
+        <Room userID={session.user.user_id} roomID={session.user.room.id} />
       ) : (
         <User />
       )}
