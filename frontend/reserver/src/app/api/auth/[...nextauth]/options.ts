@@ -32,7 +32,7 @@ export const options: NextAuthOptions = {
           );
 
           const data = await res.json();
-          console.log(data);
+
           if (data) return data;
         } catch (error) {
           console.log(error);
@@ -43,9 +43,6 @@ export const options: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    // async signIn({ user, credentials }) {
-    //   return "/reserver";
-    // },
     async jwt({ token, user }) {
       if (user) {
         token.user = user;
@@ -54,7 +51,7 @@ export const options: NextAuthOptions = {
     },
     async session({ session, token }) {
       session.user = jwtDecode(token.user!.access!);
-      return session;
+      return { ...session, access: token.user!.access! };
     },
   },
 };

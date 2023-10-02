@@ -15,12 +15,12 @@ class RoomApiDetailView(views.APIView):
 
 	def get_object(self, pk):
 		try:
-			return Room.objects.get(pk=pk)
+			return Room.objects.get(user=pk)
 		except Room.DoesNotExist:
 			raise Http404
 
 	def get(self, request, pk):
-		room = self.get_object(pk)
+		room = self.get_object(request.user.id)
 		serializer = RoomSerializer(room)
 		return Response(serializer.data)
 		
@@ -50,6 +50,7 @@ class RoomApiListView(views.APIView):
 	def post(self, request):
 		try:
 			data = JSONParser().parse(request)
+			data['user'] = request.user.id
 			serializer = RoomSerializer(data=data)
 
 			if serializer.is_valid():

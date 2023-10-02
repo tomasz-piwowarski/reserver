@@ -1,16 +1,17 @@
 from django.db import models
-from utils.model_abstracts import Model
 from django.contrib.auth import get_user_model
 
-class Room(Model):
+class Room(models.Model):
 	class Meta:
 		verbose_name_plural = "Rooms"
 
 	room_name = models.CharField(verbose_name="room_name", max_length=255, unique=True)
+	user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
 
-	def __str__(self):
-		return f'{self}'
-class RoomReservation(Model):
+	# def __str__(self):
+	# 	return f'{self}'
+
+class RoomReservation(models.Model):
 	class Meta:
 		verbose_name_plural="Rooms reservations"
 

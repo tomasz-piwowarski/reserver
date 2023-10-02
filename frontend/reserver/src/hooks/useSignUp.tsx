@@ -1,13 +1,8 @@
 import { redirect } from "next/navigation";
 import { useState } from "react";
-import { DJANGO_URL } from "@/utils/conts";
+import { DJANGO_URL } from "@/utils/const";
 
-interface UseSignUpInterface {
-  handleSubmit: (formData: FormData) => Promise<void>;
-  loading: boolean;
-}
-
-export default function useSignUp(): UseSignUpInterface {
+export default function useSignUp() {
   const [loading, setLoading] = useState(false);
 
   async function handleSubmit(formData: FormData): Promise<void> {

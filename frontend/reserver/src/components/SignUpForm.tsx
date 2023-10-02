@@ -1,10 +1,10 @@
-interface SignUpInterface {
+interface SignUpProps {
   handleSubmit: (formData: FormData) => void;
 }
 
 export default async function SignUp({
   handleSubmit,
-}: SignUpInterface): Promise<JSX.Element> {
+}: SignUpProps): Promise<JSX.Element> {
   return (
     <form action={handleSubmit}>
       <div>

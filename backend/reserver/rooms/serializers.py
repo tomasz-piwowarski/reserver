@@ -1,18 +1,14 @@
 from . import models
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
-from rest_framework.fields import CharField, SerializerMethodField, UUIDField, DateTimeField
+from rest_framework.fields import CharField
 from rest_framework.validators import UniqueTogetherValidator
+from user.serializer import UserSerializer
 
 class RoomSerializer(serializers.ModelSerializer):
-	room_name = CharField(required=True)
-
 	class Meta:
 		model = models.Room
-		fields = (
-			'id',
-			'room_name',
-		)
+		fields = '__all__'
 
 		validators = [
 			UniqueTogetherValidator(
