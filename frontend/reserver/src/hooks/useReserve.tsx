@@ -45,10 +45,7 @@ export default function useReserve({ id }: UseReserveProps) {
     };
 
     try {
-      const response = await fetch(
-        `${DJANGO_URL}/api/rooms/reservation/`,
-        options
-      );
+      const response = await fetch(`${DJANGO_URL}/api/reservations/`, options);
 
       const data = await response.json();
 

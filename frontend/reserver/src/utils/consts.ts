@@ -1,1 +1,1 @@
-export const DJANGO_URL = "http://localhost:8000";
+export const DJANGO_URL = process.env.NEXT_PUBLIC_DJANGO_URL;

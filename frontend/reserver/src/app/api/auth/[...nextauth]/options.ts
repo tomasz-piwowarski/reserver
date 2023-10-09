@@ -1,6 +1,7 @@
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import jwtDecode from "jwt-decode";
+import { DJANGO_URL } from "@/utils/consts";
 
 export const options: NextAuthOptions = {
   providers: [
@@ -26,10 +27,7 @@ export const options: NextAuthOptions = {
         };
 
         try {
-          const res = await fetch(
-            `${process.env.DJANGO_URL}/api/token/`,
-            options
-          );
+          const res = await fetch(`${DJANGO_URL}/api/token/`, options);
 
           const data = await res.json();
 

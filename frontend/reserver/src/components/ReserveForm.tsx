@@ -17,7 +17,7 @@ export default async function ReserveForm({
         <label htmlFor="hours">
           For how many hours do you want to reserve the room?
         </label>
-        <select name="hours">
+        <select id="hours" name="hours">
           {selectOptions.map((option) => (
             <option key={option.value} value={option.value}>
               {option.label}

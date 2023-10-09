@@ -1,9 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
+import useTimer from "@/hooks/useTimer";
 
 interface CountdownProps {
   startTime: number;
@@ -11,25 +10,8 @@ interface CountdownProps {
 }
 
 export default function Countdown({ startTime, endTime }: CountdownProps) {
-  const [currentTime, setCurrentTime] = useState(new Date().getTime());
-  const router = useRouter();
+  const percentage = useTimer({ startTime, endTime });
 
-  if (currentTime > endTime) router.push("/reserver");
-
-  useEffect(() => {
-    const intervalId = setInterval(
-      () => setCurrentTime(new Date().getTime()),
-      1000
-    );
-
-    return () => {
-      clearInterval(intervalId);
-    };
-  }, []);
-
-  const value = (currentTime - startTime) / (endTime - startTime);
-
-  const percentage = parseFloat(value.toFixed(2));
   return (
     <div>
       <CircularProgressbar value={percentage} text={`${percentage}%`} />;
