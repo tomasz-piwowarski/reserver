@@ -52,9 +52,12 @@ export default function useReserve({ id }: UseReserveProps) {
 
       const data = await response.json();
 
-      const endDate = new Date(data!.end_time).getTime();
+      const startTime = new Date(data!.start_time).getTime();
 
-      router.push(`/timer/${id}/${endDate}`);
+      const endTime = new Date(data!.end_time).getTime();
+
+      console.log(data);
+      router.push(`/timer/${id}/${startTime}/${endTime}`);
     } catch (error) {
       console.log(error);
     } finally {
