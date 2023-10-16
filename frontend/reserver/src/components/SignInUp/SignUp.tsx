@@ -1,10 +1,10 @@
 "use client";
 
+import SignUpForm from "@/components/SignInUp/SignUpForm";
 import Spinner from "@/components/Spinner";
-import SignUpForm from "../../components/SignInUp/SignUpForm";
 import useSignUp from "@/hooks/useSignUp";
 
-export default function SignUp(): JSX.Element {
+export default function SignUp() {
   const { loading, handleSubmit } = useSignUp();
 
   return (

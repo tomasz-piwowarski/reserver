@@ -23,9 +23,5 @@ export default function useTimer({ startTime, endTime }: UseTimerProps) {
     };
   }, []);
 
-  const value = (currentTime - startTime) / (endTime - startTime);
-
-  const percentage = parseFloat(value.toFixed(2));
-
-  return percentage;
+  return endTime;
 }

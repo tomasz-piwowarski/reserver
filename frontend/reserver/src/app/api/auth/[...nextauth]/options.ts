@@ -30,7 +30,7 @@ export const options: NextAuthOptions = {
           const res = await fetch(`${DJANGO_URL}/api/token/`, options);
 
           const data = await res.json();
-
+          console.log(data);
           if (data) return data;
         } catch (error) {
           console.log(error);
@@ -51,5 +51,8 @@ export const options: NextAuthOptions = {
       session.user = jwtDecode(token.user!.access!);
       return { ...session, access: token.user!.access! };
     },
+  },
+  pages: {
+    signIn: "/signin",
   },
 };

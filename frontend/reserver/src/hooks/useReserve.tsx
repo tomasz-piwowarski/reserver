@@ -4,7 +4,8 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 interface UseReserveProps {
-  id: string;
+  roomID: string;
+  roomName: string;
 }
 
 function addHours(date: Date, hours: number) {
@@ -13,7 +14,7 @@ function addHours(date: Date, hours: number) {
   return date;
 }
 
-export default function useReserve({ id }: UseReserveProps) {
+export default function useReserve({ roomID, roomName }: UseReserveProps) {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
@@ -30,7 +31,7 @@ export default function useReserve({ id }: UseReserveProps) {
     const endTime = addHours(new Date(startTime), parseInt(hours));
 
     const body = {
-      room: id,
+      room: roomID,
       start_time: startTime,
       end_time: endTime,
     };
@@ -53,8 +54,7 @@ export default function useReserve({ id }: UseReserveProps) {
 
       const endTime = new Date(data!.end_time).getTime();
 
-      console.log(data);
-      router.push(`/timer/${id}/${startTime}/${endTime}`);
+      router.push(`/timer/${roomID}/${roomName}/${startTime}/${endTime}`);
     } catch (error) {
       console.log(error);
     } finally {

@@ -8,12 +8,14 @@ import { useRouter } from "next/navigation";
 interface QRContainerProps {
   value: string;
   roomID: number;
+  roomName: string;
   access: string;
 }
 
 export default function QRContainer({
   value,
   roomID,
+  roomName,
   access,
 }: QRContainerProps) {
   const router = useRouter();
@@ -25,14 +27,13 @@ export default function QRContainer({
           `${DJANGO_URL}/api/reservations/check-room/${roomID}/`,
           { headers: { Authorization: `Bearer ${access}` } }
         );
-
         const data = await response.json();
 
         if (data.end_time && data.start_time) {
           const endTime = new Date(data.end_time).getTime();
           const startTime = new Date(data.start_time).getTime();
 
-          router.push(`/timer/${roomID}/${startTime}/${endTime}`);
+          router.push(`/timer/${roomID}/${roomName}/${startTime}/${endTime}`);
         }
       } catch (error) {
         console.log(error);
