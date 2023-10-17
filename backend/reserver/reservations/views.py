@@ -1,7 +1,10 @@
 from .serializers import RoomReservationSerializer
 from .models import RoomReservation
+from rooms.models import Room
+from rooms.serializers import RoomSerializer
 from datetime import datetime
-from rest_framework import views, generics
+from rest_framework.parsers import JSONParser
+from rest_framework import views, generics, status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from pytz import timezone
@@ -43,23 +46,80 @@ class RoomReservationDetailView(generics.RetrieveUpdateDestroyAPIView):
 	serializer_class = RoomReservationSerializer
 	queryset = RoomReservation.objects.all()
 	lookup_url_kwarg = 'pk'
-		
+
+	def patch(self, request, *args, **kwargs):
+		instance = self.get_object()
+		if instance.user != request.user:
+			return Response({"detail": "You do not have permission to perform this action."}, status=status.HTTP_403_FORBIDDEN)
+			
+		serializer = self.get_serializer(instance, data=request.data, partial=True)
+		serializer.is_valid(raise_exception=True)
+		self.perform_update(serializer)
+		return Response(serializer.data)
+
 class CheckIfRoomIsReserved(views.APIView):
 	permission_classes = (IsAuthenticated,)
 
-	def get(self, request, id):
+	def get(self, request, room_id):
 		try:
-			room = RoomReservation.objects.filter(room=id).latest("end_time")
+			reservation = RoomReservation.objects.filter(room=room_id).latest("end_time")
 		except RoomReservation.DoesNotExist:
 			return Response({})	
 
 		poland = timezone('Europe/Warsaw')
 
 		current_datetime = datetime.now(poland)
-		if room.end_time > current_datetime:
-			print(room.end_time, current_datetime)
+		if reservation.end_time > current_datetime and reservation.active:
 
-			room = RoomReservationSerializer(room)
-			return Response(room.data)
+			reservation = RoomReservationSerializer(reservation)
+			print(reservation.data)
+
+			return Response(reservation.data)
+		else:
+			return Response({})
+
+class CheckReservation(views.APIView):
+	permission_classes = (IsAuthenticated,)
+
+	def get(self, request, reservation_id):
+		try:
+			reservation = RoomReservation.objects.get(id=reservation_id)
+		except RoomReservation.DoesNotExist:
+			return Response({})	
+
+		poland = timezone('Europe/Warsaw')
+		current_datetime = datetime.now(poland)
+		if reservation.end_time > current_datetime and reservation.active:
+
+			reservation = RoomReservationSerializer(reservation)
+			print(reservation.data)
+
+			return Response(reservation.data)
+		else:
+			return Response({})
+
+class CheckUser(views.APIView):
+	permission_classes = (IsAuthenticated,)
+
+	def get(self, request):
+		try:
+			reservation = RoomReservation.objects.filter(user=request.user).latest("end_time")
+			
+		except RoomReservation.DoesNotExist:
+			return Response({})	
+
+		poland = timezone('Europe/Warsaw')
+		current_datetime = datetime.now(poland)
+		if reservation.end_time > current_datetime and reservation.active:
+			reservation_serializer = RoomReservationSerializer(reservation)
+			reservation_data = reservation_serializer.data
+
+			room = Room.objects.get(id=reservation_data['room'])
+			room_serializer = RoomSerializer(room)
+			room_data = room_serializer.data
+
+			reservation_data['room'] = room_data
+			print(reservation_data)
+			return Response(reservation_data)
 		else:
 			return Response({})

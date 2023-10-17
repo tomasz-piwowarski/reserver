@@ -1,8 +1,7 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-
-const inter = Inter({ subsets: ["latin"] });
+import { Toaster } from "react-hot-toast";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -18,6 +17,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <main className="flex justify-center items-center min-h-screen lg:h-screen bg-gray-100">
+          <Toaster position="bottom-left" />
           {children}
         </main>
       </body>

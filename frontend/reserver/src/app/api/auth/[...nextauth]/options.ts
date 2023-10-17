@@ -2,6 +2,7 @@ import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import jwtDecode from "jwt-decode";
 import { DJANGO_URL } from "@/utils/consts";
+import { toast } from "react-hot-toast";
 
 export const options: NextAuthOptions = {
   providers: [
@@ -30,9 +31,11 @@ export const options: NextAuthOptions = {
           const res = await fetch(`${DJANGO_URL}/api/token/`, options);
 
           const data = await res.json();
-          console.log(data);
+
+          if (res.status !== 200) throw new Error(data);
+
           if (data) return data;
-        } catch (error) {
+        } catch (error: any) {
           console.log(error);
         }
 

@@ -24,7 +24,6 @@ class RoomApiDetailView(views.APIView):
 		return Response(serializer.data)
 		
 	def patch(self, request, pk):
-		print(request)
 		try:
 			room = Room.objects.get(pk=pk)
 			data = JSONParser().parse(request)

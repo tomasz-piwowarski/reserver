@@ -6,6 +6,8 @@ import useTimer from "@/hooks/useTimer";
 interface CountdownProps {
   startTime: number;
   endTime: number;
+  reservationID: string;
+  token: string;
 }
 
 interface RendererProps {
@@ -29,12 +31,17 @@ const renderer = ({ total, hours, minutes, seconds }: RendererProps) => {
   }
 };
 
-export default function Timer({ startTime, endTime }: CountdownProps) {
-  const value = useTimer({ startTime, endTime });
+export default function Timer({
+  startTime,
+  endTime,
+  reservationID,
+  token,
+}: CountdownProps) {
+  const value = useTimer({ startTime, endTime, reservationID, token });
 
   return (
     <div className="mx-auto">
-      <Countdown date={value} renderer={renderer} />
+      <Countdown date={endTime} renderer={renderer} />
     </div>
   );
 }

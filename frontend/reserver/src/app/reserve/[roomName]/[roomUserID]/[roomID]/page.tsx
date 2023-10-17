@@ -37,10 +37,10 @@ export default async function Reserve({ params }: ReserveProps) {
   }
 
   return (
-    <>
-      <ReserveClientProvider session={session}>
-        <ReserveClient roomID={params.roomID} roomName={params.roomName} />
-      </ReserveClientProvider>
-    </>
+    <ReserveClient
+      roomID={params.roomID}
+      roomName={params.roomName}
+      token={session.access}
+    />
   );
 }

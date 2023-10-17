@@ -31,7 +31,7 @@ export default async function Room({ userID, roomID, roomName }: RoomProps) {
     const endTime = new Date(isRoom!.end_time).getTime();
     const startTime = new Date(isRoom!.start_time).getTime();
 
-    redirect(`/timer/${roomID}/${roomName}/${startTime}/${endTime}`);
+    redirect(`/timer/${isRoom.id}/${roomName}/${startTime}/${endTime}`);
   }
 
   return (

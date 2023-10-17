@@ -10,3 +10,4 @@ class RoomReservation(models.Model):
 	user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
 	start_time = models.DateTimeField(verbose_name="start_time")
 	end_time = models.DateTimeField(verbose_name="end_time")
+	active = models.BooleanField(default=True)

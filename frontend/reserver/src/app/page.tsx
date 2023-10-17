@@ -1,4 +1,4 @@
-import SignUp from "@/components/SignInUp/SignUp";
+import SignUp from "@/components/SignInUp/SignUpClient";
 import Link from "next/link";
 import HowItWorks from "@/components/HowItWorks/HowItWorks";
 import Container from "@/components/Container";

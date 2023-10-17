@@ -14,7 +14,7 @@ export default function SignInForm({
   handleInput,
 }: SignInFormProps) {
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={(e) => handleSubmit(e)}>
       <Input
         label="Username"
         type="text"

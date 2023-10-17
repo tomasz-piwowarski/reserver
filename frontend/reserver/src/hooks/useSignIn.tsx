@@ -1,11 +1,13 @@
 import { signIn } from "next-auth/react";
 import { ChangeEvent, FormEvent, useState } from "react";
+import { toast } from "react-hot-toast";
 
 export default function useSignIn() {
   const [credentials, setCredentials] = useState({
     username: "",
     password: "",
   });
+  const [loading, setLoading] = useState(false);
 
   const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -17,18 +19,28 @@ export default function useSignIn() {
     e.preventDefault();
 
     try {
+      setLoading(true);
+
       const response = await signIn("credentials", {
         username: credentials.username,
         password: credentials.password,
-        redirect: true,
+        redirect: false,
         callbackUrl: "/reserver",
       });
 
-      console.log(response);
-    } catch (error) {
-      console.log(error);
+      if (!response!.ok) throw new Error(response!.error ?? "Unknown error");
+
+      toast.success("Signed in successfully!");
+    } catch (error: any) {
+      if (error) {
+        toast.error(error.message);
+      } else {
+        toast.error("An error occurred");
+      }
+    } finally {
+      setLoading(false);
     }
   };
 
-  return { handleInput, handleSubmit };
+  return { handleInput, handleSubmit, loading };
 }

@@ -10,13 +10,15 @@ import Title from "../Title";
 interface ReserveClientProps {
   roomID: string;
   roomName: string;
+  token: string;
 }
 
 export default function ReserveClient({
   roomID,
   roomName,
+  token,
 }: ReserveClientProps) {
-  const { handleSubmit, loading } = useReserve({ roomID, roomName });
+  const { handleSubmit, loading } = useReserve({ roomID, roomName, token });
 
   if (loading) return <Spinner />;
 

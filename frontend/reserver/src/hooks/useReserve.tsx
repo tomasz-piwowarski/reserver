@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { DJANGO_URL } from "@/utils/consts";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 interface UseReserveProps {
   roomID: string;
   roomName: string;
+  token: string;
 }
 
 function addHours(date: Date, hours: number) {
@@ -14,14 +14,15 @@ function addHours(date: Date, hours: number) {
   return date;
 }
 
-export default function useReserve({ roomID, roomName }: UseReserveProps) {
+export default function useReserve({
+  roomID,
+  roomName,
+  token,
+}: UseReserveProps) {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  const session = useSession();
-  const token = session.data?.access;
-
-  async function handleSubmit(formData: FormData): Promise<void> {
+  const handleSubmit = async (formData: FormData): Promise<void> => {
     setLoading(true);
 
     const hours = formData.get("hours") as string;
@@ -60,7 +61,7 @@ export default function useReserve({ roomID, roomName }: UseReserveProps) {
     } finally {
       setLoading(false);
     }
-  }
+  };
 
   return { handleSubmit, loading };
 }

@@ -1,30 +1,48 @@
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import { DJANGO_URL } from "@/utils/consts";
+import { toast } from "react-hot-toast";
 
 export default function useSignUp() {
-  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  async function handleSubmit(formData: FormData): Promise<void> {
-    setLoading(true);
+  const [credentials, setCredentials] = useState({
+    username: "",
+    password: "",
+  });
+  const [loading, setLoading] = useState(false);
 
-    const options = {
-      method: "POST",
-      body: JSON.stringify(Object.fromEntries(formData)),
-      headers: { "Content-Type": "application/json" },
-    };
+  const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+
+    setCredentials((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
 
     try {
-      await fetch(`${DJANGO_URL}/user/register/`, options);
+      setLoading(true);
 
-      router.push("/api/auth/signin");
-    } catch (error) {
-      console.log(error);
+      const options = {
+        method: "POST",
+        body: JSON.stringify(credentials),
+        headers: { "Content-Type": "application/json" },
+      };
+
+      const response = await fetch(`${DJANGO_URL}/user/register/`, options);
+
+      if (response.ok) router.push("/api/auth/signin");
+    } catch (error: any) {
+      if (error) {
+        toast.error(error.message);
+      } else {
+        toast.error("An error occurred");
+      }
+    } finally {
+      setLoading(false);
     }
+  };
 
-    setLoading(false);
-  }
-
-  return { handleSubmit, loading };
+  return { handleInput, handleSubmit, loading };
 }
