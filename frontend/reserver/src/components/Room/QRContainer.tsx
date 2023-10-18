@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import QR from "./QR";
 import { DJANGO_URL } from "@/utils/consts";
 import { useRouter } from "next/navigation";
+import { toast } from "react-hot-toast";
 
 interface QRContainerProps {
   value: string;
@@ -33,10 +34,17 @@ export default function QRContainer({
           const endTime = new Date(data.end_time).getTime();
           const startTime = new Date(data.start_time).getTime();
 
+          toast.success("Room has been reserved!");
+
           router.push(`/timer/${roomID}/${roomName}/${startTime}/${endTime}`);
         }
-      } catch (error) {
+      } catch (error: any) {
         console.log(error);
+        if (error) {
+          toast.error(error.message);
+        } else {
+          toast.error("An error occurred");
+        }
       }
     }
 

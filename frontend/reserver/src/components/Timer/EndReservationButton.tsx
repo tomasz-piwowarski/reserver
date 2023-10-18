@@ -3,6 +3,7 @@
 import { DJANGO_URL } from "@/utils/consts";
 import Button from "../Button";
 import { useRouter } from "next/navigation";
+import { toast } from "react-hot-toast";
 
 interface EndReservationButtonProps {
   reservationID: string;
@@ -26,18 +27,30 @@ export default function EndReservationButton({
           },
           method: "PATCH",
           body: JSON.stringify({
-            active: false,
+            ended_earlier: true,
           }),
         }
       );
 
       const data = await response.json();
 
+      if (!response.ok) throw new Error(data.message);
+
+      toast.success("Reservation has been ended earlier");
+    } catch (error: any) {
+      if (error) {
+        toast.error(error.message);
+      } else {
+        toast.error("An error occurred");
+      }
+    } finally {
       router.push("/reserver");
-    } catch (error) {
-      console.log(error);
     }
   };
 
-  return <Button onClick={endReservationEarlier}>End reservation</Button>;
+  return (
+    <Button style="mt-4" onClick={endReservationEarlier}>
+      End reservation
+    </Button>
+  );
 }

@@ -32,6 +32,8 @@ export default function useSignUp() {
 
       const response = await fetch(`${DJANGO_URL}/user/register/`, options);
 
+      toast.success("You have been registered, you can log in now!");
+
       if (response.ok) router.push("/api/auth/signin");
     } catch (error: any) {
       if (error) {

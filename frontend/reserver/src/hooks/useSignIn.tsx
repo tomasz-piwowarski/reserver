@@ -1,4 +1,5 @@
 import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { ChangeEvent, FormEvent, useState } from "react";
 import { toast } from "react-hot-toast";
 
@@ -8,6 +9,8 @@ export default function useSignIn() {
     password: "",
   });
   const [loading, setLoading] = useState(false);
+
+  const router = useRouter();
 
   const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -31,6 +34,7 @@ export default function useSignIn() {
       if (!response!.ok) throw new Error(response!.error ?? "Unknown error");
 
       toast.success("Signed in successfully!");
+      router.push("/reserver");
     } catch (error: any) {
       if (error) {
         toast.error(error.message);

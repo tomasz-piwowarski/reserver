@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { DJANGO_URL } from "@/utils/consts";
 import { useRouter } from "next/navigation";
+import { toast } from "react-hot-toast";
 
 interface UseReserveProps {
   roomID: string;
@@ -55,9 +56,15 @@ export default function useReserve({
 
       const endTime = new Date(data!.end_time).getTime();
 
-      router.push(`/timer/${roomID}/${roomName}/${startTime}/${endTime}`);
-    } catch (error) {
-      console.log(error);
+      toast.success("Room has been reserved!");
+
+      router.push(`/timer/${data.id}/${roomName}/${startTime}/${endTime}`);
+    } catch (error: any) {
+      if (error) {
+        toast.error(error.message);
+      } else {
+        toast.error("An error occurred");
+      }
     } finally {
       setLoading(false);
     }

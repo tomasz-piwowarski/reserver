@@ -1,6 +1,8 @@
 import { DJANGO_URL } from "@/utils/consts";
+import { getUTCTimestamp } from "@/utils/date";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
+import { toast } from "react-hot-toast";
 
 interface UseTimerProps {
   startTime: number;
@@ -20,7 +22,7 @@ export default function useTimer({
   useEffect(() => {
     async function checkIfNotReserved() {
       try {
-        const currentTime = new Date().getTime();
+        const currentTime = getUTCTimestamp();
 
         if (currentTime > endTime) router.push("/reserver");
 
@@ -31,11 +33,16 @@ export default function useTimer({
 
         const data = await response.json();
 
-        if (!data.active) {
+        if (data.ended) {
           router.push(`/reserver`);
         }
-      } catch (error) {
+      } catch (error: any) {
         console.log(error);
+        if (error) {
+          toast.error(error.message);
+        } else {
+          toast.error("An error occurred");
+        }
       }
     }
 
