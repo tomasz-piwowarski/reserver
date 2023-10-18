@@ -48,8 +48,9 @@ class RoomReservationDetailView(generics.RetrieveUpdateDestroyAPIView):
 
 	def patch(self, request, *args, **kwargs):
 		instance = self.get_object()
+		print(instance.user, request.user)
 		if instance.user != request.user:
-			return Response({"detail": "You do not have permission to perform this action."}, status=status.HTTP_403_FORBIDDEN)
+			return Response({"message": "You do not have permission to perform this action."}, status=status.HTTP_403_FORBIDDEN)
 			
 		serializer = self.get_serializer(instance, data=request.data, partial=True)
 		serializer.is_valid(raise_exception=True)
@@ -61,7 +62,7 @@ class CheckIfRoomIsReserved(views.APIView):
 
 	def get(self, request, room_id):
 		try:
-			reservation = RoomReservation.objects.filter(room=room_id).latest("end_time")
+			reservation = RoomReservation.objects.filter(room=room_id).latest("id")
 		except RoomReservation.DoesNotExist:
 			return Response({})	
 
@@ -73,7 +74,7 @@ class CheckIfRoomIsReserved(views.APIView):
 
 			return Response(reservation.data)
 		else:
-			return Response({})
+			return Response({"ended": True})
 
 class CheckReservation(views.APIView):
 	permission_classes = (IsAuthenticated,)
@@ -92,19 +93,21 @@ class CheckReservation(views.APIView):
 
 			return Response(reservation.data)
 		else:
-			return Response({})
+			return Response({"ended": True})
 
 class CheckUser(views.APIView):
 	permission_classes = (IsAuthenticated,)
 
 	def get(self, request):
 		try:
-			reservation = RoomReservation.objects.filter(user=request.user).latest("end_time")
+			reservation = RoomReservation.objects.filter(user=request.user).latest("id")
 			
 		except RoomReservation.DoesNotExist:
 			return Response({})	
 
 		current_datetime = timezone.now()
+		print(reservation.id)
+
 		if reservation.end_time > current_datetime and not reservation.ended_earlier:
 			reservation_serializer = RoomReservationSerializer(reservation)
 			reservation_data = reservation_serializer.data
@@ -117,4 +120,4 @@ class CheckUser(views.APIView):
 			print(reservation_data)
 			return Response(reservation_data)
 		else:
-			return Response({})
+			return Response({"ended": True})
