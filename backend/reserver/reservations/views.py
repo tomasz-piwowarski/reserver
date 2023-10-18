@@ -2,12 +2,11 @@ from .serializers import RoomReservationSerializer
 from .models import RoomReservation
 from rooms.models import Room
 from rooms.serializers import RoomSerializer
-from datetime import datetime
+from django.utils import timezone
 from rest_framework.parsers import JSONParser
 from rest_framework import views, generics, status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-from pytz import timezone
 
 class RoomReservationListView(generics.ListCreateAPIView):
 	permission_classes = (IsAuthenticated,)
@@ -66,10 +65,8 @@ class CheckIfRoomIsReserved(views.APIView):
 		except RoomReservation.DoesNotExist:
 			return Response({})	
 
-		poland = timezone('Europe/Warsaw')
-
-		current_datetime = datetime.now(poland)
-		if reservation.end_time > current_datetime and reservation.active:
+		current_datetime = timezone.now()
+		if reservation.end_time > current_datetime and not reservation.ended_earlier:
 
 			reservation = RoomReservationSerializer(reservation)
 			print(reservation.data)
@@ -87,9 +84,8 @@ class CheckReservation(views.APIView):
 		except RoomReservation.DoesNotExist:
 			return Response({})	
 
-		poland = timezone('Europe/Warsaw')
-		current_datetime = datetime.now(poland)
-		if reservation.end_time > current_datetime and reservation.active:
+		current_datetime = timezone.now()
+		if reservation.end_time > current_datetime and not reservation.ended_earlier:
 
 			reservation = RoomReservationSerializer(reservation)
 			print(reservation.data)
@@ -108,9 +104,8 @@ class CheckUser(views.APIView):
 		except RoomReservation.DoesNotExist:
 			return Response({})	
 
-		poland = timezone('Europe/Warsaw')
-		current_datetime = datetime.now(poland)
-		if reservation.end_time > current_datetime and reservation.active:
+		current_datetime = timezone.now()
+		if reservation.end_time > current_datetime and not reservation.ended_earlier:
 			reservation_serializer = RoomReservationSerializer(reservation)
 			reservation_data = reservation_serializer.data
 
