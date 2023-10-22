@@ -1,30 +1,30 @@
+import { ChangeEvent, FormEvent } from "react";
 import Button from "../Button";
+import { FIELDS } from "@/utils/reserveFormConstants";
 
 interface ReserveFormProps {
-  handleSubmit: (formData: FormData) => void;
+  handleSubmit: (e: FormEvent<HTMLFormElement>) => void;
+  handleSelect: (e: ChangeEvent<HTMLSelectElement>) => void;
 }
 
-const selectOptions = [
-  { value: 1, label: 1 },
-  { value: 2, label: 2 },
-  { value: 3, label: 3 },
-];
-
-export default async function ReserveForm({
+export default function ReserveForm({
   handleSubmit,
-}: ReserveFormProps): Promise<JSX.Element> {
+  handleSelect,
+}: ReserveFormProps) {
   return (
-    <form action={handleSubmit}>
+    <form onSubmit={(e) => handleSubmit(e)}>
       <div className="flex justify-center items-center w-full">
-        <label className="mr-2" htmlFor="hours">
-          Hours:
+        <label className="mr-2" htmlFor={FIELDS.hours.name}>
+          {FIELDS.hours.label}
         </label>
         <select
-          id="hours"
-          name="hours"
+          id={FIELDS.hours.name}
+          name={FIELDS.hours.name}
+          onChange={handleSelect}
           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-gray-500 focus:border-gray-500 p-2.5"
+          defaultValue={FIELDS.hours.options[0].value}
         >
-          {selectOptions.map((option) => (
+          {FIELDS.hours.options.map((option) => (
             <option key={option.value} value={option.value}>
               {option.label}
             </option>

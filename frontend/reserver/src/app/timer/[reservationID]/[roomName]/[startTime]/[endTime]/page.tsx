@@ -1,10 +1,8 @@
-import { options } from "@/app/api/auth/[...nextauth]/options";
 import Container from "@/components/Container";
 import EndReservationButton from "@/components/Timer/EndReservationButton";
 import Title from "@/components/Title";
-import { getServerSession } from "next-auth";
+import { getSessionOrRedirect } from "@/utils/session";
 import dynamic from "next/dynamic";
-import { redirect } from "next/navigation";
 
 const Countdown = dynamic(() => import("@/components/Timer/Timer"), {
   ssr: false,
@@ -20,9 +18,7 @@ interface TimerProps {
 }
 
 export default async function Timer({ params }: TimerProps) {
-  const session = await getServerSession(options);
-
-  if (!session || !session.user) redirect("/signin");
+  const session = await getSessionOrRedirect();
 
   const startTime = parseInt(params.startTime);
 

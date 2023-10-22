@@ -84,7 +84,7 @@ class RoomReservationTests(TestCase):
 
         response = self.client.get(check_url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data, {})
+        self.assertEqual(response.data, {'ended': True})
 
         reservation.delete()
 

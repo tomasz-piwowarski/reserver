@@ -1,10 +1,10 @@
-import { getServerSession } from "next-auth";
-import { options } from "@/app/api/auth/[...nextauth]/options";
 import { redirect } from "next/navigation";
-import { DJANGO_URL } from "@/utils/consts";
+import { DJANGO_URL, NEXT_URL } from "@/utils/consts";
 import QRContainer from "./QRContainer";
 import Container from "../Container";
 import Title from "../Title";
+import { getSessionOrRedirect } from "@/utils/session";
+import { checkIfRoomReservedOrRedirect } from "@/utils/room";
 
 interface RoomProps {
   userID: number;
@@ -13,26 +13,13 @@ interface RoomProps {
 }
 
 export default async function Room({ userID, roomID, roomName }: RoomProps) {
-  const session = await getServerSession(options);
+  const session = await getSessionOrRedirect();
 
-  if (!session || !session.user || !session.user.name)
-    redirect("/api/auth/signin");
-
-  const data = await fetch(
-    `${DJANGO_URL}/api/reservations/check-room/${roomID}/`,
-    {
-      headers: { Authorization: `Bearer ${session.access}` },
-    }
-  );
-
-  const isRoom = await data.json();
-
-  if (isRoom.room) {
-    const endTime = new Date(isRoom!.end_time).getTime();
-    const startTime = new Date(isRoom!.start_time).getTime();
-
-    redirect(`/timer/${isRoom.id}/${roomName}/${startTime}/${endTime}`);
-  }
+  await checkIfRoomReservedOrRedirect({
+    roomID,
+    roomName,
+    token: session.access,
+  });
 
   return (
     <Container style="w-screen lg:w-1/3 lg:h-4/5 mx-5 lg:m-0">
@@ -40,7 +27,7 @@ export default async function Room({ userID, roomID, roomName }: RoomProps) {
         <Title style="mb-4 text-gray-900 text-2xl mx-auto">{roomName}</Title>
         <QRContainer
           roomName={roomName}
-          value={`http://localhost:3000/reserve/${roomName}/${userID}/${roomID}`}
+          value={`${NEXT_URL}/reserve/${roomName}/${userID}/${roomID}`}
           roomID={roomID}
           access={session.access}
         />

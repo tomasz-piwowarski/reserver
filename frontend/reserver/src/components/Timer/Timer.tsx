@@ -17,12 +17,16 @@ interface RendererProps {
   seconds: number;
 }
 
+const twoDigitsTime = (n: number) => {
+  return (n < 10 ? "0" : "") + n;
+};
+
 const renderer = ({ total, hours, minutes, seconds }: RendererProps) => {
   if (total) {
     // Render a countdown
     return (
       <span className="text-3xl">
-        {hours}:{minutes}:{seconds}
+        {twoDigitsTime(hours)}:{twoDigitsTime(minutes)}:{twoDigitsTime(seconds)}
       </span>
     );
   } else {

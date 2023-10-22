@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import { DJANGO_URL } from "@/utils/consts";
 import { useRouter } from "next/navigation";
 import { toast } from "react-hot-toast";
@@ -20,17 +20,21 @@ export default function useReserve({
   roomName,
   token,
 }: UseReserveProps) {
+  const [hours, setHours] = useState(1);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  const handleSubmit = async (formData: FormData): Promise<void> => {
-    setLoading(true);
+  const handleSelect = (e: ChangeEvent<HTMLSelectElement>) => {
+    setHours(parseInt(e.target.value));
+  };
 
-    const hours = formData.get("hours") as string;
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
+    e.preventDefault();
+    setLoading(true);
 
     const startTime = new Date();
 
-    const endTime = addHours(new Date(startTime), parseInt(hours));
+    const endTime = addHours(new Date(startTime), hours);
 
     const body = {
       room: roomID,
@@ -70,5 +74,5 @@ export default function useReserve({
     }
   };
 
-  return { handleSubmit, loading };
+  return { handleSelect, handleSubmit, loading };
 }

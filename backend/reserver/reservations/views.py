@@ -106,7 +106,6 @@ class CheckUser(views.APIView):
 			return Response({})	
 
 		current_datetime = timezone.now()
-		print(reservation.id)
 
 		if reservation.end_time > current_datetime and not reservation.ended_earlier:
 			reservation_serializer = RoomReservationSerializer(reservation)

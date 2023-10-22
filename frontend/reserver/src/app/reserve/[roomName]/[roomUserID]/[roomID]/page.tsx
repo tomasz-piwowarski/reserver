@@ -1,9 +1,8 @@
 import ReserveClient from "@/components/ReserveClient/ReserveClient";
-import ReserveClientProvider from "@/components/ReserveClient/ReserveClientProvider";
-import { options } from "@/app/api/auth/[...nextauth]/options";
-import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { DJANGO_URL } from "@/utils/consts";
+import { getSessionOrRedirect } from "@/utils/session";
+import { checkIfRoomReservedOrRedirect } from "@/utils/room";
 
 interface ReserveProps {
   params: {
@@ -14,28 +13,13 @@ interface ReserveProps {
 }
 
 export default async function Reserve({ params }: ReserveProps) {
-  const session = await getServerSession(options);
+  const session = await getSessionOrRedirect();
 
-  if (!session || !session.user || !session.user.name) redirect("/signin");
-
-  const data = await fetch(
-    `${DJANGO_URL}/api/reservations/check-room/${params.roomID}/`,
-    {
-      headers: { Authorization: `Bearer ${session.access}` },
-    }
-  );
-
-  const isRoom = await data.json();
-
-  if (isRoom.room) {
-    const endTime = new Date(isRoom!.end_time).getTime();
-    const startTime = new Date(isRoom!.start_time).getTime();
-
-    redirect(
-      `/timer/${params.roomID}/${params.roomName}/${startTime}/${endTime}`
-    );
-  }
-
+  await checkIfRoomReservedOrRedirect({
+    roomID: params.roomID,
+    roomName: params.roomName,
+    token: session.access,
+  });
   return (
     <ReserveClient
       roomID={params.roomID}

@@ -1,13 +1,9 @@
-import { options } from "@/app/api/auth/[...nextauth]/options";
-import { getServerSession } from "next-auth";
-import { redirect } from "next/navigation";
-import User from "@/components/User";
+import User from "@/components/User/User";
 import Room from "@/components/Room/Room";
+import { getSessionOrRedirect } from "@/utils/session";
 
 export default async function Reserver() {
-  const session = await getServerSession(options);
-
-  if (!session || !session.user || !session.user.name) redirect("/signin");
+  const session = await getSessionOrRedirect();
 
   return (
     <>
