@@ -11,11 +11,9 @@ Frontend/reserver:
 npm install
 npm run dev
 
-Backend:
-env\Scripts\activate
-
 Backend/reserver:
-pip install -r backend/requirements.txt
+pip install -r requirements.txt
+py manage.py migrate
 py manage.py runserver
 ```
 server will start on localhost with the PORT given in .env.local file.
