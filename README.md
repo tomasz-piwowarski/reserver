@@ -3,7 +3,7 @@ An application for reserving rooms after scanning a QR code made with Next.js 13
 
 ## To run
 
-In frontend/reserver create .env.local file and file it based on .env.local.example file.
+In frontend/reserver create .env.local file and fill it based on .env.local.example file.
 
 Then run:
 ```shell
