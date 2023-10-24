@@ -22,6 +22,6 @@ python manage.py createsuperuser
 Runserver
 python manage.py runserver
 ```
-Server will start on localhost with the PORT given in .env.local file.
+By default, the frontend will launch at http://localhost:3000 and the backend at http://localhost:8000
 
 In order for an account to be designated as a room account, follow these steps: first, create a 'Rooms' group in the Django admin panel and add the account to it. Next, create a room in the Django admin panel, set the name, and choose the correct user. After signing in, you will see a QR code.
