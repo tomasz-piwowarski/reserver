@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
 import { MainButtons, NormalButtons } from "./Buttons";
 import RoomSlides from "./RoomSlides";
 import UserSlides from "./UserSlides";
+import useHowItWorks from "@/hooks/useHowItWorks";
 
 function Main() {
   return (
@@ -16,19 +16,9 @@ function Main() {
 }
 
 export default function HowItWorks() {
-  const [currentIndex, setCurrentIndex] = useState(4);
-
   const items = [...UserSlides, <Main />, ...RoomSlides];
 
-  const nextSlide = () => {
-    if (currentIndex === items.length - 1) return;
-    setCurrentIndex((prevIndex) => prevIndex + 1);
-  };
-
-  const prevSlide = () => {
-    if (currentIndex === 0) return;
-    setCurrentIndex((prevIndex) => prevIndex - 1);
-  };
+  const { prevSlide, nextSlide, currentIndex } = useHowItWorks(items);
 
   return (
     <div className="flex flex-col h-[520px] justify-center items-center bg-gradient-to-t from-indigo-800 to-gray-900 to-90% relative overflow-hidden z-10 lg:h-full lg:w-1/2 lg:rounded-r-3xl">

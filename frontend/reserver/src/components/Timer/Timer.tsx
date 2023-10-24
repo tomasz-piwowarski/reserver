@@ -2,6 +2,7 @@
 
 import Countdown from "react-countdown";
 import useTimer from "@/hooks/useTimer";
+import { twoDigitsNumber } from "@/utils/twoDigitsNumber";
 
 interface CountdownProps {
   startTime: number;
@@ -17,20 +18,15 @@ interface RendererProps {
   seconds: number;
 }
 
-const twoDigitsTime = (n: number) => {
-  return (n < 10 ? "0" : "") + n;
-};
-
 const renderer = ({ total, hours, minutes, seconds }: RendererProps) => {
   if (total) {
-    // Render a countdown
     return (
       <span className="text-3xl">
-        {twoDigitsTime(hours)}:{twoDigitsTime(minutes)}:{twoDigitsTime(seconds)}
+        {twoDigitsNumber(hours)}:{twoDigitsNumber(minutes)}:
+        {twoDigitsNumber(seconds)}
       </span>
     );
   } else {
-    // Render a finished state
     return <div>Finished!</div>;
   }
 };
@@ -41,7 +37,7 @@ export default function Timer({
   reservationID,
   token,
 }: CountdownProps) {
-  const value = useTimer({ startTime, endTime, reservationID, token });
+  useTimer({ startTime, endTime, reservationID, token });
 
   return (
     <div className="mx-auto">

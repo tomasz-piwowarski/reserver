@@ -33,7 +33,7 @@ export default function useTimer({
 
         const data = await response.json();
 
-        if (data.ended) {
+        if (data.ended_earlier) {
           router.push(`/reserver`);
         }
       } catch (error: any) {

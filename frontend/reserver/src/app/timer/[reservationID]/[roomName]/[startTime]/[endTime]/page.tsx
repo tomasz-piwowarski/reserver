@@ -1,6 +1,7 @@
 import Container from "@/components/Container";
-import EndReservationButton from "@/components/Timer/EndReservationButton";
+import EndReservationEarlier from "@/components/Timer/EndReservationEarlier";
 import Title from "@/components/Title";
+import { formatRoomName } from "@/utils/formatRoomName";
 import { getSessionOrRedirect } from "@/utils/session";
 import dynamic from "next/dynamic";
 
@@ -24,8 +25,8 @@ export default async function Timer({ params }: TimerProps) {
 
   const endTime = parseInt(params.endTime);
 
-  const roomName = params.roomName.replace(/%20/g, " ");
-
+  const roomName = formatRoomName(params.roomName);
+  console.log(session);
   return (
     <Container style="lg:w-1/3 lg:h-2/5 mx-5 lg:m-0">
       <div className="flex flex-col justify-center mx-auto lg:w-full md:w-1/2 w-full p-12 lg:p-24">
@@ -37,7 +38,7 @@ export default async function Timer({ params }: TimerProps) {
           token={session.access}
         />
         {!session.user.room ? (
-          <EndReservationButton
+          <EndReservationEarlier
             reservationID={params.reservationID}
             access={session.access}
           />

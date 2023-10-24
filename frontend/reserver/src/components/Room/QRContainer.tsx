@@ -28,8 +28,10 @@ export default function QRContainer({
           `${DJANGO_URL}/api/reservations/check-room/${roomID}/`,
           { headers: { Authorization: `Bearer ${access}` } }
         );
+
         const data = await response.json();
 
+        console.log(data);
         if (data.end_time && data.start_time) {
           const endTime = new Date(data.end_time).getTime();
           const startTime = new Date(data.start_time).getTime();

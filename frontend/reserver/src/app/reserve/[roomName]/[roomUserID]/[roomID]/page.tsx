@@ -1,6 +1,4 @@
 import ReserveClient from "@/components/ReserveClient/ReserveClient";
-import { redirect } from "next/navigation";
-import { DJANGO_URL } from "@/utils/consts";
 import { getSessionOrRedirect } from "@/utils/session";
 import { checkIfRoomReservedOrRedirect } from "@/utils/room";
 
@@ -20,6 +18,7 @@ export default async function Reserve({ params }: ReserveProps) {
     roomName: params.roomName,
     token: session.access,
   });
+
   return (
     <ReserveClient
       roomID={params.roomID}

@@ -7,6 +7,7 @@ interface InputProps {
   id: string;
   handleInput?: (e: ChangeEvent<HTMLInputElement>) => void;
   styles?: string;
+  validation?: {};
 }
 
 export default function Input({
@@ -16,10 +17,11 @@ export default function Input({
   placeholder,
   id,
   styles,
+  validation,
 }: InputProps) {
   return (
-    <div className="flex flex-col mb-6">
-      <label className="text-sm text-gray-500 font-medium" htmlFor="username">
+    <div className="flex flex-col">
+      <label className="text-sm text-gray-500 font-medium" htmlFor={id}>
         {label}
       </label>
       <input
@@ -29,6 +31,7 @@ export default function Input({
         id={id}
         className={`border-solid border-b-2 border-gray-300 py-2 outline-none focus:border-black ${styles}`}
         onChange={handleInput}
+        {...validation}
       />
     </div>
   );

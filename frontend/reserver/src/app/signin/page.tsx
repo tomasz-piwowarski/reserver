@@ -1,6 +1,6 @@
 import Container from "@/components/Container";
-import SignInClient from "@/components/SignInUp/SignInClient";
-import SignInUpContainer from "@/components/SignInUp/SignInUpContainer";
+import SignInClient from "@/components/SignIn/SignInClient";
+import SignInUpContainer from "@/components/SignInUpContainer";
 import Title from "@/components/Title";
 import Link from "next/link";
 

@@ -4,7 +4,7 @@ import useReserve from "@/hooks/useReserve";
 import Spinner from "../Spinner";
 import ReserveForm from "./ReserveForm";
 import Container from "../Container";
-import SignInUpContainer from "../SignInUp/SignInUpContainer";
+import SignInUpContainer from "../SignInUpContainer";
 import Title from "../Title";
 import { formatRoomName } from "@/utils/formatRoomName";
 

@@ -1,5 +1,4 @@
-import { redirect } from "next/navigation";
-import { DJANGO_URL, NEXT_URL } from "@/utils/consts";
+import { NEXT_URL } from "@/utils/consts";
 import QRContainer from "./QRContainer";
 import Container from "../Container";
 import Title from "../Title";

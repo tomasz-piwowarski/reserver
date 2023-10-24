@@ -34,8 +34,10 @@ export default function useSignIn() {
       if (!response!.ok) throw new Error(response!.error ?? "Unknown error");
 
       toast.success("Signed in successfully!");
+
       router.push("/reserver");
     } catch (error: any) {
+      console.log(error);
       if (error) {
         toast.error(error.message);
       } else {

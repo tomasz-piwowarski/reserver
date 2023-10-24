@@ -1,23 +1,41 @@
 import React from "react";
-import { fireEvent, render, waitFor } from "@testing-library/react";
+import { render } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import useReserve from "@/hooks/useReserve";
+import Room from "./Room";
+import { getSessionOrRedirect } from "@/utils/session";
+import { checkIfRoomReservedOrRedirect } from "@/utils/room";
+import RootLayout from "@/app/layout";
 
-jest.mock("../../hooks/useReserve");
+jest.mock("../../utils/session", () => ({
+  getSessionOrRedirect: jest.fn(async () => ({
+    access: "mocked-access-token",
+  })),
+}));
 
-// describe("ReserveClient Component", () => {
-//   it("renders component with loading spinner", () => {
-//     (useReserve as jest.Mock).mockReturnValue({
-//       handleSubmit: jest.fn(),
-//       handleSelect: jest.fn(),
-//       loading: true,
-//     });
+jest.mock("../../utils/room", () => ({
+  checkIfRoomReservedOrRedirect: jest.fn(async () => {}),
+}));
 
-//     const { getByTestId } = render(
-//       <ReserveClient roomID="123" roomName="Test Room" token="token123" />
-//     );
+jest.mock("next/navigation", () => jest.requireActual("next-router-mock"));
 
-//     const spinnerElement = getByTestId("spinner");
-//     expect(spinnerElement).toBeInTheDocument();
-//   });
-// });
+describe("Room Component", () => {
+  it("does render", async () => {
+    const Result = await Room({
+      userID: 123,
+      roomID: 123,
+      roomName: "Test Room",
+    });
+
+    const { container } = render(Result);
+
+    expect(container).toBeInTheDocument();
+
+    expect(getSessionOrRedirect).toHaveBeenCalled();
+
+    expect(checkIfRoomReservedOrRedirect).toHaveBeenCalledWith({
+      roomID: 123,
+      roomName: "Test Room",
+      token: "mocked-access-token",
+    });
+  });
+});

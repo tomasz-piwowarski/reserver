@@ -1,11 +1,13 @@
-import SignUp from "@/components/SignInUp/SignUpClient";
+import SignUp from "@/components/SignUp/SignUpClient";
 import Link from "next/link";
 import HowItWorks from "@/components/HowItWorks/HowItWorks";
 import Container from "@/components/Container";
-import SignInUpContainer from "@/components/SignInUp/SignInUpContainer";
+import SignInUpContainer from "@/components/SignInUpContainer";
 import Title from "@/components/Title";
+import { DJANGO_URL } from "@/utils/consts";
+import { redirect } from "next/navigation";
 
-export default function Home() {
+export default async function Home() {
   return (
     <Container style="lg:flex-row lg:w-4/6 lg:h-4/5 my-10 mx-5 lg:m-0">
       <SignInUpContainer style="lg:w-1/2">

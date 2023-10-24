@@ -2,7 +2,6 @@ import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import jwtDecode from "jwt-decode";
 import { DJANGO_URL } from "@/utils/consts";
-import { toast } from "react-hot-toast";
 
 export const options: NextAuthOptions = {
   providers: [
@@ -27,19 +26,15 @@ export const options: NextAuthOptions = {
           headers: { "Content-Type": "application/json" },
         };
 
-        try {
-          const res = await fetch(`${DJANGO_URL}/api/token/`, options);
+        const res = await fetch(`${DJANGO_URL}/api/token/`, options);
 
-          const data = await res.json();
+        const data = await res.json();
 
-          if (res.status !== 200) throw new Error(data);
-
-          if (data) return data;
-        } catch (error: any) {
-          console.log(error);
+        if (!res.ok) {
+          throw new Error("Invalid credentials");
         }
 
-        return null;
+        return data;
       },
     }),
   ],
@@ -48,6 +43,7 @@ export const options: NextAuthOptions = {
       if (user) {
         token.user = user;
       }
+
       return token;
     },
     async session({ session, token }) {
