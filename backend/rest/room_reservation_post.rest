@@ -1,9 +1,0 @@
-POST http://localhost:8000/api/rooms/reservation/ HTTP/1.1
-content-type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk1ODI4NTc4LCJpYXQiOjE2OTU4MjgyNzgsImp0aSI6IjkyYzc1ZjQwZGMzYjQ2NzFiZWQ3YmI5ZDIxNWVjOWJhIiwidXNlcl9pZCI6Mn0.LgoD9xr8L0ckzeWuzSxjhSkv9wqwPZdPuwEwJ-8AJPM
-
-{
-    "room": "b276d977-4d03-4352-a415-cd888b7cfc8b",
-    "start_time": "2023-09-27T12:00:00Z",
-    "end_time": "2023-09-27T14:00:00Z"
-}

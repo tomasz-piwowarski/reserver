@@ -1,7 +1,0 @@
-PATCH http://localhost:8000/api/rooms/1/
-content-type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk3NDc0MjM2LCJpYXQiOjE2OTczODc4MzYsImp0aSI6IjJmMDY0ZjUzMmRlZDRjNmJhNGI1ZjgyZmQ5YjM2YzQzIiwidXNlcl9pZCI6MiwibmFtZSI6InJvb20xIiwicm9vbSI6eyJpZCI6MSwicm9vbV9uYW1lIjoiUm9vbSAjMSIsInVzZXIiOjJ9fQ.K-jjFRdrwUrZQvcDvd6nKtsLnq30aoG44tX_rgoLCtA
-
-{
-	"room_name": "Room 1"
-}
