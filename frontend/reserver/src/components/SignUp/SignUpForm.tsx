@@ -27,7 +27,7 @@ export function SubmitButton() {
 
 export default function SignUpForm() {
   const [state, formAction] = useFormState(signUpUser, initialState);
-  console.log(state);
+
   return (
     <form data-testid={FORM_NAME} action={formAction}>
       <div className="mb-6">
